@@ -4,8 +4,9 @@ import { MapPin, Navigation, Phone, Clock, AlertCircle } from 'lucide-react';
 
 let ai: any = null;
 try {
-  if (process.env.GEMINI_API_KEY) {
-    ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const apiKey = process.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
+  if (apiKey) {
+    ai = new GoogleGenAI({ apiKey });
   }
 } catch (e) {
   console.error("Failed to initialize GoogleGenAI", e);
