@@ -1,0 +1,5 @@
+{
+  "name": "HealthConnect",
+  "description": "Hospital resource dashboard, patient navigation, and AI medical assistant.",
+  "requestFramePermissions": ["geolocation"]
+}
