@@ -3,7 +3,14 @@ import { GoogleGenAI } from '@google/genai';
 import { Send, Bot, User, Loader2 } from 'lucide-react';
 import Markdown from 'react-markdown';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let ai: any = null;
+try {
+  if (process.env.GEMINI_API_KEY) {
+    ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  }
+} catch (e) {
+  console.error("Failed to initialize GoogleGenAI", e);
+}
 
 interface Message {
   role: 'user' | 'model';
@@ -23,7 +30,7 @@ export default function Chatbot() {
   const chatRef = useRef<any>(null);
 
   useEffect(() => {
-    if (!chatRef.current) {
+    if (!chatRef.current && ai) {
       chatRef.current = ai.chats.create({
         model: 'gemini-2.5-flash',
         config: {

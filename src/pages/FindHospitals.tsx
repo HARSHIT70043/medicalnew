@@ -2,7 +2,14 @@ import { useState, useEffect } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import { MapPin, Navigation, Phone, Clock, AlertCircle } from 'lucide-react';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let ai: any = null;
+try {
+  if (process.env.GEMINI_API_KEY) {
+    ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  }
+} catch (e) {
+  console.error("Failed to initialize GoogleGenAI", e);
+}
 
 interface Hospital {
   name: string;
@@ -37,6 +44,10 @@ export default function FindHospitals() {
 
   const findNearbyHospitals = async () => {
     if (!location) return;
+    if (!ai) {
+      setError('AI service is not configured. Please check your API key.');
+      return;
+    }
     setLoading(true);
     setError(null);
 
