@@ -184,7 +184,7 @@ const Login = () => {
                 </>
               ) : (
                 <>
-                  <span>{isSignUp ? 'Create Account' : 'Login to HealthConnect'}</span>
+                  <span>{isSignUp ? 'Create Account' : 'Login to Lifeline Live'}</span>
                   <ArrowRight className="w-5 h-5" />
                 </>
               )}
