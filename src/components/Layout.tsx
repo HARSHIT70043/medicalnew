@@ -1,10 +1,15 @@
 import { Outlet, NavLink } from 'react-router-dom';
-import { MapPin, Activity, FileText, MessageSquare } from 'lucide-react';
+import { MapPin, Activity, FileText, MessageSquare, LogOut, Droplets } from 'lucide-react';
 
-export default function Layout() {
+interface LayoutProps {
+  onLogout: () => void;
+}
+
+export default function Layout({ onLogout }: LayoutProps) {
   const navItems = [
     { path: '/', label: 'Find Hospitals', icon: MapPin },
     { path: '/dashboard', label: 'Live Dashboard', icon: Activity },
+    { path: '/blood-bank', label: 'Blood Bank', icon: Droplets },
     { path: '/history', label: 'Medical History', icon: FileText },
     { path: '/assistant', label: 'AI Assistant', icon: MessageSquare },
   ];
@@ -19,6 +24,13 @@ export default function Layout() {
           </div>
           <h1 className="text-lg font-semibold tracking-tight text-neutral-800">HealthConnect</h1>
         </div>
+        <button 
+          onClick={onLogout}
+          className="md:hidden p-2 text-neutral-500 hover:text-red-600 transition-colors"
+          title="Logout"
+        >
+          <LogOut className="w-5 h-5" />
+        </button>
       </header>
 
       {/* Main Content Area */}
@@ -48,6 +60,15 @@ export default function Layout() {
             </NavLink>
           ))}
         </nav>
+        <div className="p-4 border-t border-neutral-200">
+          <button 
+            onClick={onLogout}
+            className="flex items-center gap-3 px-3 py-2.5 w-full rounded-xl text-neutral-600 hover:bg-red-50 hover:text-red-600 transition-colors"
+          >
+            <LogOut className="w-5 h-5" />
+            <span className="font-medium">Logout</span>
+          </button>
+        </div>
       </aside>
 
       {/* Mobile Bottom Nav */}
