@@ -32,6 +32,10 @@ export default function Login({ onLogin }: LoginProps) {
         return; // Stop login process if DB fails
       }
       
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+      }
+      
       onLogin();
       navigate('/');
     } catch (err) {
@@ -71,7 +75,7 @@ export default function Login({ onLogin }: LoginProps) {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <h2 className="mt-6 text-center text-4xl font-extrabold text-neutral-900 tracking-tight">
+          <h2 className="mt-6 text-center text-4xl font-bold text-neutral-900 tracking-tight font-display">
             Protecting <span className="text-emerald-600">Life</span>
           </h2>
           <p className="mt-2 text-center text-sm text-neutral-600 font-medium">

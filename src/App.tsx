@@ -12,6 +12,7 @@ import MedicalHistory from './pages/MedicalHistory';
 import Chatbot from './pages/Chatbot';
 import Login from './pages/Login';
 import BloodBank from './pages/BloodBank';
+import EmergencyReport from './pages/EmergencyReport';
 
 export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -25,6 +26,7 @@ export default function App() {
 
   const handleLogout = () => {
     localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('token');
     setIsAuthenticated(false);
   };
 
@@ -42,6 +44,7 @@ export default function App() {
           <Route index element={<FindHospitals />} />
           <Route path="dashboard" element={<HospitalDashboard />} />
           <Route path="blood-bank" element={<BloodBank />} />
+          <Route path="emergency" element={<EmergencyReport />} />
           <Route path="history" element={<MedicalHistory />} />
           <Route path="assistant" element={<Chatbot />} />
         </Route>

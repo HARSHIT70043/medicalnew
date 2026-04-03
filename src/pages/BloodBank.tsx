@@ -123,9 +123,13 @@ export default function BloodBank() {
         
         // Save to MongoDB via API
         try {
+          const token = localStorage.getItem('token');
           const saveRes = await fetch('/api/blood-data', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify({ hospitals: uniqueHospitals }),
           });
           const saveData = await saveRes.json();
@@ -164,17 +168,17 @@ export default function BloodBank() {
   }));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-neutral-900">Real-Time Blood Availability</h2>
-          <p className="text-neutral-500 mt-1">Check live blood stock across all nearby hospitals and blood banks.</p>
+          <h2 className="text-3xl font-bold tracking-tight text-neutral-900 font-display">Real-Time Blood Availability</h2>
+          <p className="text-neutral-500 mt-1 text-lg">Check live blood stock across all nearby hospitals and blood banks.</p>
         </div>
         <div className="flex items-center gap-3 w-full md:w-auto">
           {hospitals.length > 0 && (
             <button
               onClick={() => setViewMode(viewMode === 'ui' ? 'json' : 'ui')}
-              className="bg-white border border-neutral-200 hover:bg-neutral-50 text-neutral-700 px-4 py-2.5 rounded-xl font-medium transition-colors flex items-center gap-2 shadow-sm flex-1 md:flex-none justify-center"
+              className="bg-white border border-neutral-200 hover:bg-neutral-50 text-neutral-700 px-5 py-2.5 rounded-2xl font-semibold transition-all flex items-center gap-2 shadow-sm flex-1 md:flex-none justify-center active:scale-95"
             >
               {viewMode === 'ui' ? <Database className="w-5 h-5" /> : <Droplets className="w-5 h-5" />}
               {viewMode === 'ui' ? 'View JSON DB' : 'View UI'}
@@ -183,7 +187,7 @@ export default function BloodBank() {
           <button
             onClick={fetchBloodData}
             disabled={!location || loading}
-            className="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-sm flex-1 md:flex-none justify-center"
+            className="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-2xl font-bold transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg shadow-red-600/20 flex-1 md:flex-none justify-center active:scale-95"
           >
             {loading ? (
               <RefreshCw className="w-5 h-5 animate-spin" />
@@ -196,28 +200,28 @@ export default function BloodBank() {
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-700 p-4 rounded-xl flex items-start gap-3 border border-red-100">
+        <div className="bg-red-50 text-red-700 p-5 rounded-2xl flex items-start gap-3 border border-red-100 shadow-sm">
           <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-          <p>{error}</p>
+          <p className="font-medium">{error}</p>
         </div>
       )}
 
       {hospitals.length > 0 && (
-        <div className="flex flex-col sm:flex-row gap-3">
+        <div className="flex flex-col sm:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
             <input 
               type="text" 
               placeholder="Search hospitals..." 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-white border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all shadow-sm"
+              className="w-full pl-12 pr-4 py-3.5 bg-white border border-neutral-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all shadow-[0_8px_30px_rgb(0,0,0,0.04)] font-medium"
             />
           </div>
           <select
             value={selectedBloodType}
             onChange={(e) => setSelectedBloodType(e.target.value as keyof BloodStock | 'All')}
-            className="px-4 py-3 bg-white border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all shadow-sm sm:w-48 cursor-pointer"
+            className="px-4 py-3.5 bg-white border border-neutral-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-red-500/20 focus:border-red-500 transition-all shadow-[0_8px_30px_rgb(0,0,0,0.04)] sm:w-56 cursor-pointer font-medium appearance-none"
           >
             <option value="All">All Blood Types</option>
             {bloodTypes.map(type => (
@@ -228,42 +232,42 @@ export default function BloodBank() {
       )}
 
       {hospitals.length > 0 && viewMode === 'ui' && (
-        <div className="grid grid-cols-1 gap-4">
+        <div className="grid grid-cols-1 gap-6">
           {filteredHospitals.length === 0 ? (
-            <div className="text-center py-8 bg-white border border-neutral-200 rounded-2xl border-dashed">
-              <p className="text-neutral-500">No hospitals match your filters.</p>
+            <div className="text-center py-12 bg-white border border-neutral-200 rounded-3xl border-dashed">
+              <p className="text-neutral-500 font-medium">No hospitals match your filters.</p>
             </div>
           ) : (
             filteredHospitals.map((hospital, index) => (
-              <div key={index} className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow">
-                <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-4 pb-4 border-b border-neutral-100">
+              <div key={index} className="bg-white border border-neutral-100 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-red-100 transition-all group">
+                <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-6 pb-6 border-b border-neutral-100/50">
                   <div>
-                    <h3 className="font-semibold text-lg text-neutral-900">{hospital.name}</h3>
-                    <div className="flex items-center gap-3 mt-1 text-sm text-neutral-500">
-                      <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {hospital.distance}</span>
-                      <span className="flex items-center gap-1"><RefreshCw className="w-3 h-3" /> Updated: {hospital.lastUpdated}</span>
+                    <h3 className="font-bold text-xl text-neutral-900 font-display group-hover:text-red-900 transition-colors">{hospital.name}</h3>
+                    <div className="flex items-center gap-4 mt-2 text-sm text-neutral-500 font-medium">
+                      <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-neutral-400" /> {hospital.distance}</span>
+                      <span className="flex items-center gap-1.5"><RefreshCw className="w-3.5 h-3.5 text-neutral-400" /> Updated: {hospital.lastUpdated}</span>
                     </div>
                   </div>
-                  <div className="bg-red-50 text-red-700 px-3 py-1.5 rounded-lg text-sm font-semibold flex items-center gap-2 w-fit">
+                  <div className="bg-red-50 text-red-700 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2 w-fit shadow-inner">
                     <Droplets className="w-4 h-4" />
                     Total Units: {Object.values(hospital.stock).reduce((a, b) => a + b, 0)}
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+                <div className="grid grid-cols-4 sm:grid-cols-8 gap-3">
                   {bloodTypes.map(type => (
                     <div 
                       key={type} 
-                      className={`flex flex-col items-center justify-center p-2 rounded-lg border ${
+                      className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-colors ${
                         hospital.stock[type] > 10 
-                          ? 'bg-green-50 border-green-100 text-green-800' 
+                          ? 'bg-emerald-50 border-emerald-100 text-emerald-800' 
                           : hospital.stock[type] > 0 
-                            ? 'bg-yellow-50 border-yellow-100 text-yellow-800'
+                            ? 'bg-amber-50 border-amber-100 text-amber-800'
                             : 'bg-red-50 border-red-100 text-red-800 opacity-60'
                       }`}
                     >
-                      <span className="font-bold text-sm">{type}</span>
-                      <span className="text-xs font-medium mt-0.5">{hospital.stock[type]} u</span>
+                      <span className="font-bold text-base font-display">{type}</span>
+                      <span className="text-xs font-bold mt-1 opacity-80">{hospital.stock[type]} u</span>
                     </div>
                   ))}
                 </div>
@@ -274,22 +278,24 @@ export default function BloodBank() {
       )}
 
       {hospitals.length > 0 && viewMode === 'json' && (
-        <div className="bg-neutral-900 rounded-2xl p-6 shadow-sm overflow-hidden flex flex-col">
-          <div className="flex items-center gap-2 text-neutral-400 mb-4 border-b border-neutral-800 pb-4">
+        <div className="bg-neutral-900 rounded-3xl p-8 shadow-xl overflow-hidden flex flex-col">
+          <div className="flex items-center gap-3 text-neutral-400 mb-6 border-b border-neutral-800 pb-4">
             <Code className="w-5 h-5" />
-            <h3 className="font-mono text-sm font-medium">blood_bank_database.json</h3>
+            <h3 className="font-mono text-sm font-bold tracking-wider">blood_bank_database.json</h3>
           </div>
-          <pre className="text-emerald-400 font-mono text-sm overflow-x-auto whitespace-pre-wrap">
+          <pre className="text-emerald-400 font-mono text-sm overflow-x-auto whitespace-pre-wrap leading-relaxed">
             {JSON.stringify(jsonDatabase, null, 2)}
           </pre>
         </div>
       )}
 
       {!loading && hospitals.length === 0 && !error && (
-        <div className="text-center py-16 bg-white border border-neutral-200 rounded-2xl border-dashed">
-          <Droplets className="w-12 h-12 text-neutral-300 mx-auto mb-3" />
-          <h3 className="text-lg font-medium text-neutral-900">No blood data loaded</h3>
-          <p className="text-neutral-500 mt-1 max-w-sm mx-auto">
+        <div className="text-center py-20 bg-white border border-neutral-200 rounded-3xl border-dashed shadow-sm">
+          <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Droplets className="w-10 h-10 text-red-400" />
+          </div>
+          <h3 className="text-xl font-bold text-neutral-900 font-display">No blood data loaded</h3>
+          <p className="text-neutral-500 mt-2 max-w-sm mx-auto text-lg">
             Click the "Load Live Data" button to fetch real-time blood availability from nearby hospitals.
           </p>
         </div>

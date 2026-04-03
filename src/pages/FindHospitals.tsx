@@ -128,78 +128,88 @@ export default function FindHospitals() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight text-neutral-900">Nearby Hospitals</h2>
-          <p className="text-neutral-500 mt-1">Find medical facilities around your current location.</p>
+    <div className="space-y-8">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden rounded-3xl bg-emerald-900 text-white p-8 md:p-12 shadow-2xl shadow-emerald-900/20">
+        <div className="absolute top-0 right-0 -mt-16 -mr-16 w-64 h-64 bg-emerald-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-pulse" />
+        <div className="absolute bottom-0 left-0 -mb-16 -ml-16 w-64 h-64 bg-teal-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 animate-pulse" style={{ animationDelay: '2s' }} />
+        
+        <div className="relative z-10 max-w-2xl">
+          <h2 className="text-3xl md:text-4xl font-bold tracking-tight font-display mb-4">
+            Find Care Near You
+          </h2>
+          <p className="text-emerald-100 text-lg mb-8 max-w-xl">
+            Locate nearby hospitals, clinics, and medical centers instantly. Get real-time availability for beds and blood types.
+          </p>
+          
+          <button
+            onClick={findNearbyHospitals}
+            disabled={!location || loading}
+            className="bg-white text-emerald-900 hover:bg-emerald-50 px-6 py-3.5 rounded-2xl font-semibold transition-all duration-200 disabled:opacity-70 disabled:cursor-not-allowed flex items-center gap-3 shadow-xl shadow-black/10 active:scale-95"
+          >
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-emerald-900/30 border-t-emerald-900 rounded-full animate-spin" />
+            ) : (
+              <MapPin className="w-5 h-5" />
+            )}
+            {loading ? 'Scanning Area...' : 'Locate Nearby Hospitals'}
+          </button>
         </div>
-        <button
-          onClick={findNearbyHospitals}
-          disabled={!location || loading}
-          className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-        >
-          {loading ? (
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          ) : (
-            <MapPin className="w-5 h-5" />
-          )}
-          {loading ? 'Searching...' : 'Find Hospitals'}
-        </button>
       </div>
 
       {error && (
-        <div className="bg-red-50 text-red-700 p-4 rounded-xl flex items-start gap-3 border border-red-100">
+        <div className="bg-red-50 text-red-700 p-4 rounded-2xl flex items-start gap-3 border border-red-100 shadow-sm">
           <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
-          <p>{error}</p>
+          <p className="font-medium">{error}</p>
         </div>
       )}
 
       {hospitals.length > 0 && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {hospitals.map((hospital, index) => (
-            <div key={index} className="bg-white border border-neutral-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col">
-              <div className="flex justify-between items-start gap-2">
-                <h3 className="font-semibold text-lg text-neutral-900 line-clamp-1">{hospital.name}</h3>
-                <span className="bg-neutral-100 text-neutral-700 text-xs font-bold px-2 py-1 rounded-lg whitespace-nowrap">
+            <div key={index} className="bg-white border border-neutral-100 rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all duration-300 flex flex-col group">
+              <div className="flex justify-between items-start gap-4">
+                <div>
+                  <h3 className="font-bold text-xl text-neutral-900 line-clamp-1 font-display group-hover:text-emerald-700 transition-colors">{hospital.name}</h3>
+                  <p className="text-sm text-neutral-500 mt-1.5 flex items-center gap-1.5">
+                    <MapPin className="w-4 h-4" /> {hospital.address}
+                  </p>
+                </div>
+                <span className="bg-emerald-50 text-emerald-700 text-sm font-bold px-3 py-1.5 rounded-xl whitespace-nowrap shadow-sm">
                   {hospital.distance}
                 </span>
               </div>
               
-              <p className="text-sm text-neutral-500 mt-1 flex items-center gap-1">
-                <MapPin className="w-4 h-4" /> {hospital.address}
-              </p>
-              
               {/* Real-Time Data Block */}
               {hospital.realTimeData && (
-                <div className="mt-4 p-4 bg-neutral-50 rounded-xl border border-neutral-100 space-y-3">
-                  <div className="flex items-center gap-2 text-sm font-semibold text-neutral-700 mb-2">
+                <div className="mt-6 p-5 bg-neutral-50/80 rounded-2xl border border-neutral-100 space-y-4">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-neutral-700">
                     <Activity className="w-4 h-4 text-emerald-600" />
                     Live Availability
                   </div>
                   
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-white p-3 rounded-lg border border-neutral-200 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
-                        <BedDouble className="w-4 h-4" />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white p-4 rounded-xl border border-neutral-100 shadow-sm flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 shrink-0">
+                        <BedDouble className="w-5 h-5" />
                       </div>
                       <div>
-                        <p className="text-xs text-neutral-500 font-medium">Beds</p>
-                        <p className="text-sm font-bold text-neutral-900">
+                        <p className="text-xs text-neutral-500 font-medium uppercase tracking-wider">Beds</p>
+                        <p className="text-sm font-bold text-neutral-900 mt-0.5">
                           {hospital.realTimeData.generalBeds} Gen / {hospital.realTimeData.icuBeds} ICU
                         </p>
                       </div>
                     </div>
 
-                    <div className="bg-white p-3 rounded-lg border border-neutral-200 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center text-red-600 shrink-0">
-                        <Droplets className="w-4 h-4" />
+                    <div className="bg-white p-4 rounded-xl border border-neutral-100 shadow-sm flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600 shrink-0">
+                        <Droplets className="w-5 h-5" />
                       </div>
                       <div>
-                        <p className="text-xs text-neutral-500 font-medium">Blood</p>
-                        <div className="flex flex-wrap gap-1 mt-0.5">
+                        <p className="text-xs text-neutral-500 font-medium uppercase tracking-wider">Blood</p>
+                        <div className="flex flex-wrap gap-1 mt-1">
                           {hospital.realTimeData.bloodTypes.map(type => (
-                            <span key={type} className="text-[10px] font-bold bg-red-100 text-red-700 px-1.5 py-0.5 rounded">
+                            <span key={type} className="text-[10px] font-bold bg-red-100 text-red-700 px-1.5 py-0.5 rounded-md">
                               {type}
                             </span>
                           ))}
@@ -215,17 +225,17 @@ export default function FindHospitals() {
                   href={hospital.uri}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex-1 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 py-2.5 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-colors"
+                  className="flex-1 bg-neutral-900 text-white hover:bg-neutral-800 py-3 rounded-xl font-medium text-sm flex items-center justify-center gap-2 transition-colors shadow-md shadow-neutral-900/10"
                 >
                   <Navigation className="w-4 h-4" />
-                  Directions
+                  Get Directions
                 </a>
                 <a
                   href={`tel:112`}
-                  className="w-11 h-11 bg-neutral-100 text-neutral-700 hover:bg-neutral-200 rounded-xl flex items-center justify-center transition-colors shrink-0"
+                  className="w-12 h-12 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700 rounded-xl flex items-center justify-center transition-colors shrink-0"
                   title="Emergency Contact"
                 >
-                  <Phone className="w-4 h-4" />
+                  <Phone className="w-5 h-5" />
                 </a>
               </div>
             </div>
@@ -234,11 +244,13 @@ export default function FindHospitals() {
       )}
 
       {!loading && hospitals.length === 0 && !error && (
-        <div className="text-center py-16 bg-white border border-neutral-200 rounded-2xl border-dashed">
-          <MapPin className="w-12 h-12 text-neutral-300 mx-auto mb-3" />
-          <h3 className="text-lg font-medium text-neutral-900">No hospitals loaded</h3>
-          <p className="text-neutral-500 mt-1 max-w-sm mx-auto">
-            Click the "Find Hospitals" button to search for medical facilities near your current location.
+        <div className="text-center py-20 bg-white border border-neutral-200 rounded-3xl border-dashed">
+          <div className="w-16 h-16 bg-neutral-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <MapPin className="w-8 h-8 text-neutral-400" />
+          </div>
+          <h3 className="text-xl font-bold text-neutral-900 font-display">No hospitals loaded</h3>
+          <p className="text-neutral-500 mt-2 max-w-sm mx-auto">
+            Click the "Locate Nearby Hospitals" button above to search for medical facilities near your current location.
           </p>
         </div>
       )}

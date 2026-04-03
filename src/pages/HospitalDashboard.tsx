@@ -32,13 +32,13 @@ export default function HospitalDashboard() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl font-bold tracking-tight text-neutral-900">Live Resource Dashboard</h2>
-          <p className="text-neutral-500 mt-1">Real-time availability of hospital resources.</p>
+          <h2 className="text-3xl font-bold tracking-tight text-neutral-900 font-display">Live Resource Dashboard</h2>
+          <p className="text-neutral-500 mt-1 text-lg">Real-time availability of hospital resources.</p>
         </div>
         <button
           onClick={handleUpdate}
           disabled={isUpdating}
-          className="bg-white border border-neutral-200 hover:bg-neutral-50 text-neutral-700 px-4 py-2 rounded-xl font-medium transition-colors flex items-center gap-2 shadow-sm"
+          className="bg-white border border-neutral-200 hover:bg-neutral-50 text-neutral-700 px-5 py-2.5 rounded-2xl font-semibold transition-all flex items-center gap-2 shadow-sm active:scale-95"
         >
           <RefreshCw className={`w-4 h-4 ${isUpdating ? 'animate-spin' : ''}`} />
           Refresh Data
@@ -47,36 +47,36 @@ export default function HospitalDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Beds Section */}
-        <div className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-              <BedDouble className="w-5 h-5" />
+        <div className="bg-white rounded-3xl p-8 border border-neutral-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600 shadow-inner">
+              <BedDouble className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-semibold text-neutral-900">Bed Availability</h3>
+            <h3 className="text-xl font-bold text-neutral-900 font-display">Bed Availability</h3>
           </div>
           
           <div className="space-y-4">
-            <div className="flex justify-between items-center p-4 bg-neutral-50 rounded-xl border border-neutral-100">
+            <div className="flex justify-between items-center p-5 bg-neutral-50 rounded-2xl border border-neutral-100/50">
               <div>
-                <p className="text-sm font-medium text-neutral-500">General Wards</p>
-                <p className="text-2xl font-bold text-neutral-900 mt-1">{resources.generalBeds.available} <span className="text-sm font-normal text-neutral-400">/ {resources.generalBeds.total}</span></p>
+                <p className="text-xs font-bold text-neutral-500 uppercase tracking-wider mb-1">General Wards</p>
+                <p className="text-3xl font-bold text-neutral-900">{resources.generalBeds.available} <span className="text-base font-medium text-neutral-400">/ {resources.generalBeds.total}</span></p>
               </div>
-              <div className="w-16 h-16 rounded-full border-4 border-blue-100 flex items-center justify-center relative">
+              <div className="w-16 h-16 rounded-full border-4 border-blue-100 flex items-center justify-center relative bg-white shadow-sm">
                 <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                  <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-blue-500" strokeDasharray="175" strokeDashoffset={175 - (175 * resources.generalBeds.available) / resources.generalBeds.total} />
+                  <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-blue-500 transition-all duration-1000" strokeDasharray="175" strokeDashoffset={175 - (175 * resources.generalBeds.available) / resources.generalBeds.total} />
                 </svg>
                 <span className="text-xs font-bold text-blue-600">{Math.round((resources.generalBeds.available / resources.generalBeds.total) * 100)}%</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center p-4 bg-rose-50 rounded-xl border border-rose-100">
+            <div className="flex justify-between items-center p-5 bg-rose-50 rounded-2xl border border-rose-100/50">
               <div>
-                <p className="text-sm font-medium text-rose-600">ICU Beds</p>
-                <p className="text-2xl font-bold text-rose-900 mt-1">{resources.icuBeds.available} <span className="text-sm font-normal text-rose-400">/ {resources.icuBeds.total}</span></p>
+                <p className="text-xs font-bold text-rose-600 uppercase tracking-wider mb-1">ICU Beds</p>
+                <p className="text-3xl font-bold text-rose-900">{resources.icuBeds.available} <span className="text-base font-medium text-rose-400">/ {resources.icuBeds.total}</span></p>
               </div>
-              <div className="w-16 h-16 rounded-full border-4 border-rose-100 flex items-center justify-center relative">
+              <div className="w-16 h-16 rounded-full border-4 border-rose-100 flex items-center justify-center relative bg-white shadow-sm">
                 <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                  <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-rose-500" strokeDasharray="175" strokeDashoffset={175 - (175 * resources.icuBeds.available) / resources.icuBeds.total} />
+                  <circle cx="32" cy="32" r="28" stroke="currentColor" strokeWidth="4" fill="transparent" className="text-rose-500 transition-all duration-1000" strokeDasharray="175" strokeDashoffset={175 - (175 * resources.icuBeds.available) / resources.icuBeds.total} />
                 </svg>
                 <span className="text-xs font-bold text-rose-600">{Math.round((resources.icuBeds.available / resources.icuBeds.total) * 100)}%</span>
               </div>
@@ -85,20 +85,20 @@ export default function HospitalDashboard() {
         </div>
 
         {/* Blood Bank Section */}
-        <div className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm">
-          <div className="flex items-center gap-3 mb-6">
-            <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center text-red-600">
-              <Droplets className="w-5 h-5" />
+        <div className="bg-white rounded-3xl p-8 border border-neutral-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-600 shadow-inner">
+              <Droplets className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-semibold text-neutral-900">Blood Bank Status</h3>
+            <h3 className="text-xl font-bold text-neutral-900 font-display">Blood Bank Status</h3>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             {[resources.bloodA, resources.bloodB, resources.bloodO, resources.bloodAB].map((blood, idx) => (
-              <div key={idx} className="p-4 border border-neutral-100 rounded-xl bg-neutral-50 flex flex-col items-center justify-center text-center">
-                <span className="text-lg font-bold text-red-600">{blood.type}</span>
-                <span className="text-2xl font-bold text-neutral-900 mt-1">{blood.units}</span>
-                <span className="text-xs font-medium text-neutral-500 uppercase tracking-wider mt-1">Units</span>
+              <div key={idx} className="p-5 border border-neutral-100/50 rounded-2xl bg-neutral-50 flex flex-col items-center justify-center text-center hover:bg-red-50 hover:border-red-100 transition-colors group">
+                <span className="text-xl font-bold text-red-600 font-display">{blood.type}</span>
+                <span className="text-3xl font-bold text-neutral-900 mt-2 group-hover:text-red-900 transition-colors">{blood.units}</span>
+                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider mt-1">Units</span>
               </div>
             ))}
           </div>
@@ -106,12 +106,13 @@ export default function HospitalDashboard() {
       </div>
 
       {/* Resource Ingestion Form (Mock) */}
-      <div className="bg-white rounded-2xl p-6 border border-neutral-200 shadow-sm mt-8">
-        <h3 className="text-lg font-semibold text-neutral-900 mb-4">Resource Ingestion (Staff Only)</h3>
-        <form className="grid grid-cols-1 md:grid-cols-3 gap-4" onSubmit={(e) => { e.preventDefault(); handleUpdate(); }}>
+      <div className="bg-white rounded-3xl p-8 border border-neutral-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] mt-8 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-50 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -mr-20 -mt-20" />
+        <h3 className="text-xl font-bold text-neutral-900 mb-6 font-display relative z-10">Resource Ingestion (Staff Only)</h3>
+        <form className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10" onSubmit={(e) => { e.preventDefault(); handleUpdate(); }}>
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1">Resource Type</label>
-            <select className="w-full border border-neutral-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
+            <label className="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Resource Type</label>
+            <select className="w-full border border-neutral-200 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-neutral-50 font-medium appearance-none">
               <option>General Beds</option>
               <option>ICU Beds</option>
               <option>Blood Units</option>
@@ -119,11 +120,11 @@ export default function HospitalDashboard() {
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-neutral-700 mb-1">Quantity</label>
-            <input type="number" className="w-full border border-neutral-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none" placeholder="Enter quantity" />
+            <label className="block text-xs font-bold text-neutral-500 uppercase tracking-wider mb-2">Quantity</label>
+            <input type="number" className="w-full border border-neutral-200 rounded-2xl px-4 py-3.5 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none bg-neutral-50 font-medium" placeholder="Enter quantity" />
           </div>
           <div className="flex items-end">
-            <button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
+            <button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-2xl transition-all shadow-lg shadow-emerald-600/20 active:scale-95">
               Update System
             </button>
           </div>
