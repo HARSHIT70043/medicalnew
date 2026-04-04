@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Activity, BedDouble, Droplets, HeartPulse, RefreshCw } from 'lucide-react';
+import { Activity, BedDouble, Droplets, HeartPulse, RefreshCw, AlertTriangle, BellRing } from 'lucide-react';
 
 export default function HospitalDashboard() {
   const [resources, setResources] = useState({
@@ -28,6 +28,30 @@ export default function HospitalDashboard() {
     }, 1000);
   };
 
+  // Generate dynamic alerts based on current resource levels
+  const alerts = [];
+  if (resources.icuBeds.available < 10) {
+    alerts.push({
+      id: 'icu-shortage',
+      title: 'ICU Bed Shortage',
+      message: `Critical shortage of ICU beds. Only ${resources.icuBeds.available} available out of ${resources.icuBeds.total}. Immediate action required.`,
+    });
+  }
+  
+  const lowBloodTypes = [];
+  if (resources.bloodA.units < 10) lowBloodTypes.push('A+');
+  if (resources.bloodB.units < 10) lowBloodTypes.push('B+');
+  if (resources.bloodO.units < 10) lowBloodTypes.push('O+');
+  if (resources.bloodAB.units < 10) lowBloodTypes.push('AB+');
+
+  if (lowBloodTypes.length > 0) {
+    alerts.push({
+      id: 'blood-shortage',
+      title: 'Low Blood Supply',
+      message: `Urgent requirement for blood types: ${lowBloodTypes.join(', ')}. Current stock is below safe thresholds.`,
+    });
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -44,6 +68,32 @@ export default function HospitalDashboard() {
           Refresh Data
         </button>
       </div>
+
+      {/* Critical Alerts Section */}
+      {alerts.length > 0 && (
+        <div className="bg-red-50 border border-red-200 rounded-3xl p-6 shadow-sm relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-red-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 -mr-10 -mt-10 animate-pulse" />
+          <div className="flex items-center gap-3 mb-5 relative z-10">
+            <div className="w-12 h-12 rounded-2xl bg-red-100 flex items-center justify-center text-red-600 shadow-inner">
+              <BellRing className="w-6 h-6 animate-pulse" />
+            </div>
+            <h3 className="text-2xl font-bold text-red-900 font-display tracking-tight">Critical Alerts</h3>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative z-10">
+            {alerts.map(alert => (
+              <div key={alert.id} className="flex items-start gap-4 bg-white p-5 rounded-2xl border border-red-100 shadow-[0_4px_20px_rgb(220,38,38,0.05)] hover:shadow-[0_4px_20px_rgb(220,38,38,0.1)] transition-shadow">
+                <div className="mt-0.5 w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0">
+                  <AlertTriangle className="w-5 h-5 text-red-500" />
+                </div>
+                <div>
+                  <p className="font-bold text-neutral-900 text-lg">{alert.title}</p>
+                  <p className="text-sm text-neutral-600 mt-1 leading-relaxed">{alert.message}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Beds Section */}

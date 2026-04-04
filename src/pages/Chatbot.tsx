@@ -53,7 +53,7 @@ export default function Chatbot() {
       }
 
       chatRef.current = ai.chats.create({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3-flash-preview',
         config: {
           systemInstruction: 'You are a helpful medical assistant for a hospital website. Provide general information about medicines used to cure diseases, and if asked for a helpline number, provide a generic emergency number (like 112 or 911) or a mock hospital reception number (e.g., 1-800-HOSPITAL). Always advise users to consult a real doctor for serious medical advice.' + userProfileContext,
         },

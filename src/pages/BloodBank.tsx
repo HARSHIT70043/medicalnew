@@ -83,7 +83,7 @@ export default function BloodBank() {
 
     try {
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3-flash-preview',
         contents: 'Find the nearest hospitals and blood banks near my location. Provide a brief summary of the top 6 closest ones.',
         config: {
           tools: [{ googleMaps: {} }],

@@ -75,7 +75,7 @@ export default function FindHospitals() {
 
     try {
       const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
+        model: 'gemini-3-flash-preview',
         contents: 'Find the nearest hospitals, clinics, and medical centers near my location. Provide a brief summary of the top 5 closest ones.',
         config: {
           tools: [{ googleMaps: {} }],
