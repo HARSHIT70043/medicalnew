@@ -121,7 +121,17 @@ export default function FindHospitals() {
       }
     } catch (err: any) {
       console.error(err);
-      setError('Failed to fetch nearby hospitals. ' + err.message);
+      if (err.message && (err.message.includes('429') || err.message.includes('quota'))) {
+        setError('AI API quota exceeded. Loading simulated local data for demonstration.');
+        const mockHospitals = [
+          { name: "City General Hospital", address: "123 Main St", uri: "#", distance: "2.1 km", realTimeData: generateMockRealTimeData() },
+          { name: "Metro Care Center", address: "456 Oak Ave", uri: "#", distance: "3.5 km", realTimeData: generateMockRealTimeData() },
+          { name: "Sunrise Medical", address: "789 Pine Rd", uri: "#", distance: "5.0 km", realTimeData: generateMockRealTimeData() }
+        ];
+        setHospitals(mockHospitals);
+      } else {
+        setError('Failed to fetch nearby hospitals. ' + (err.message || 'Unknown error'));
+      }
     } finally {
       setLoading(false);
     }

@@ -83,12 +83,19 @@ export default function Chatbot() {
       const response = await chatRef.current.sendMessage({ message: userMessage });
       
       setMessages((prev) => [...prev, { role: 'model', content: response.text || 'Sorry, I could not process that request.' }]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Chat error:', error);
-      setMessages((prev) => [
-        ...prev,
-        { role: 'model', content: 'Sorry, I encountered an error while processing your request.' },
-      ]);
+      if (error.message && (error.message.includes('429') || error.message.includes('quota'))) {
+        setMessages((prev) => [
+          ...prev,
+          { role: 'model', content: '⚠️ **API Quota Exceeded:** I have reached my message limit for now. Please try again later or update the Gemini API key in your environment variables.' },
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          { role: 'model', content: 'Sorry, I encountered an error while processing your request.' },
+        ]);
+      }
     } finally {
       setIsLoading(false);
     }

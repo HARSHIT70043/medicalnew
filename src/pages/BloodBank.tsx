@@ -145,7 +145,16 @@ export default function BloodBank() {
       }
     } catch (err: any) {
       console.error(err);
-      setError('Failed to fetch nearby hospitals. ' + err.message);
+      if (err.message && (err.message.includes('429') || err.message.includes('quota'))) {
+        setError('AI API quota exceeded. Loading simulated local data for demonstration.');
+        const mockHospitals = [
+          { name: "City General Hospital", address: "123 Main St", distance: "2.1 km", phoneNumber: "+1 (555) 123-4567", lastUpdated: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), stock: generateMockBloodStock() },
+          { name: "Metro Care Center", address: "456 Oak Ave", distance: "3.5 km", phoneNumber: "+1 (555) 987-6543", lastUpdated: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}), stock: generateMockBloodStock() }
+        ];
+        setHospitals(mockHospitals);
+      } else {
+        setError('Failed to fetch nearby hospitals. ' + (err.message || 'Unknown error'));
+      }
     } finally {
       setLoading(false);
     }
